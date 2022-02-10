@@ -3,6 +3,7 @@ package com.example.lab6_exercise;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 /**
@@ -37,8 +38,6 @@ public class MyIntentService extends IntentService {
             if (action.equals(ACTION_DEMO)) {
                 this.goodbyeMessage = intent.getStringExtra(GOODBYE_MESSAGE);
                 handleActionDemo(goodbyeMessage);
-            }   else {
-
             }
         }
     }
@@ -55,11 +54,18 @@ public class MyIntentService extends IntentService {
         synchronized (this) {
             try {
                 wait(5000);
+                editProfile();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
         stopSelf();
+    }
+    public void editProfile() {
+        SharedPreferences preferences = getSharedPreferences("LAB6_EXERCISE_PREFERENCES", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("name", "pog");
+        editor.apply();
     }
 }
